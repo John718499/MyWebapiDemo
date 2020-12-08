@@ -28,7 +28,7 @@ namespace MyWebapiDemo.Controllers
         [HttpGet("{id}")]
         public ActionResult<Course> GetCourseById(int id)
         {
-            return db.Courses.Find(id);
+            return db.Courses.AsNoTracking().Where(data => data.CourseId==id).FirstOrDefault();;
         }
 
         [HttpPost("")]

@@ -22,7 +22,7 @@ namespace MyWebapiDemo.Controllers
         [HttpGet("")]
         public ActionResult<IEnumerable<Department>> GetDepartments()
         {
-            return new List<Department> { };
+            return db.Departments.AsNoTracking().ToList();
         }
 
         [HttpGet("{id}")]
@@ -34,7 +34,11 @@ namespace MyWebapiDemo.Controllers
         [HttpPost("")]
         public ActionResult<Department> PostDepartment(Department model)
         {
-            return null;
+            db.Departments.Add(model);
+
+            db.SaveChanges();
+
+            return Created($"api/department/{model.DepartmentId}",model);
         }
 
         [HttpPut("{id}")]
