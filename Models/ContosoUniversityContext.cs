@@ -32,7 +32,7 @@ namespace MyWebapiDemo.Models
             if (!optionsBuilder.IsConfigured)
             {
 // #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-//                 optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=ContosoUniversity;Trusted_Connection=True;MultipleActiveResultSets=true");
+//                 optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=ContosoUniversity;Trusted_Connection=True");
             }
         }
 
@@ -45,6 +45,8 @@ namespace MyWebapiDemo.Models
                 entity.HasIndex(e => e.DepartmentId, "IX_DepartmentID");
 
                 entity.Property(e => e.CourseId).HasColumnName("CourseID");
+
+                entity.Property(e => e.DateModified).HasColumnType("datetime");
 
                 entity.Property(e => e.DepartmentId)
                     .HasColumnName("DepartmentID")
@@ -93,6 +95,8 @@ namespace MyWebapiDemo.Models
                 entity.Property(e => e.DepartmentId).HasColumnName("DepartmentID");
 
                 entity.Property(e => e.Budget).HasColumnType("money");
+
+                entity.Property(e => e.DateModified).HasColumnType("datetime");
 
                 entity.Property(e => e.InstructorId).HasColumnName("InstructorID");
 
@@ -164,6 +168,8 @@ namespace MyWebapiDemo.Models
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.DateModified).HasColumnType("datetime");
+
                 entity.Property(e => e.Discriminator)
                     .IsRequired()
                     .HasMaxLength(128)
@@ -231,5 +237,16 @@ namespace MyWebapiDemo.Models
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+        public override int SaveChanges()
+        {
+
+            //3 page42
+            var entities=this.ChangeTracker.Entries();
+            foreach(var entry in entities){
+                Console.WriteLine()
+            }
+            return base.SaveChanges();
+        }
     }
 }
