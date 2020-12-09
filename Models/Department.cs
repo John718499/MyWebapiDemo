@@ -18,12 +18,8 @@ namespace MyWebapiDemo.Models
         public DateTime StartDate { get; set; }
         public int? InstructorId { get; set; }
         public byte[] RowVersion { get; set; }
-        public DateTime? DateModified { get; set; }
-        public byte? IsDeleted { get; set; }
 
         public virtual Person Instructor { get; set; }
         public virtual ICollection<Course> Courses { get; set; }
-
-        
     }
 }

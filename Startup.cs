@@ -30,6 +30,7 @@ namespace MyWebapiDemo
         {
             services.AddDbContext<ContosoUniversityContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             
             services.AddControllers();
             services.AddSwaggerGen(c =>
