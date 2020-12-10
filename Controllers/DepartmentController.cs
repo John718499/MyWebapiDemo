@@ -22,13 +22,13 @@ namespace MyWebapiDemo.Controllers
         [HttpGet("")]
         public ActionResult<IEnumerable<Department>> GetDepartments()
         {
-            return db.Departments.AsNoTracking().ToList();
+            return db.Departments.AsNoTracking().Where(data => data.IsDeleted==0).ToList();
         }
 
         [HttpGet("{id}")]
         public ActionResult<Department> GetDepartmentById(int id)
         {
-            return db.Departments.AsNoTracking().Where(data => data.DepartmentId==id).FirstOrDefault();
+            return db.Departments.AsNoTracking().Where(data => data.DepartmentId==id &&  data.IsDeleted==0).FirstOrDefault();
         }
 
         [HttpPost("")]

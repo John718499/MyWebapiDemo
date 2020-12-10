@@ -22,8 +22,7 @@ namespace MyWebapiDemo.Controllers
         [HttpGet("")]
         public ActionResult<IEnumerable<Course>> GetCourses()
         {
-            // return db.Courses.AsNoTracking().Where(data => data.IsDeleted==0).ToList();
-            return db.Courses.AsNoTracking().ToList();
+            return db.Courses.AsNoTracking().Where(data => data.IsDeleted==0).ToList();
         }
 
         [HttpGet("courseStudent/{id}")]
@@ -44,7 +43,7 @@ namespace MyWebapiDemo.Controllers
         public ActionResult<Course> GetCourseById(int id)
         {
             // return db.Courses.AsNoTracking().Where(data => data.CourseId==id && data.IsDeleted==0).FirstOrDefault();
-            return db.Courses.AsNoTracking().Where(data => data.CourseId==id).FirstOrDefault();
+            return db.Courses.AsNoTracking().Where(data => data.CourseId==id &&  data.IsDeleted==0).FirstOrDefault();
         }
 
         [HttpPost("")]
