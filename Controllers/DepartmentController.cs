@@ -68,7 +68,7 @@ namespace MyWebapiDemo.Controllers
         [HttpGet("departmentCourseCount/{id}")]
         public ActionResult<VwDepartmentCourseCount> getDepartmentCourseCountById(int id)
         {
-            var courseStudentCount=db.VwDepartmentCourseCounts.FromSqlRaw($"select * from vwDepartmentCourseCount where DepartmentID =={id}").FirstOrDefault();
+            var courseStudentCount=db.VwDepartmentCourseCounts.FromSqlRaw($"select * from vwDepartmentCourseCount where DepartmentID ={id}").FirstOrDefault();
             return courseStudentCount;
         }
     }
