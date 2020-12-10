@@ -34,7 +34,7 @@ namespace MyWebapiDemo.Controllers
         [HttpPost("")]
         public ActionResult<Department> PostDepartment(Department model)
         {
-            db.Departments.Add(model);
+            db.Departments.FromSqlRaw($"dbo.Department_Insert @Name = {model.Name}, @Budget = {model.Budget} ,@StartDate ={model.StartDate} , @InstructorID ={model.InstructorId}");
 
             db.SaveChanges();
 
@@ -44,8 +44,9 @@ namespace MyWebapiDemo.Controllers
         [HttpPut("{id}")]
         public IActionResult PutDepartment(int id, UpdateDepartment model)
         {
-            var department=db.Departments.Find(id);
-            department.InjectFrom(model);
+            // var department=db.Departments.Find(id);
+            // department.InjectFrom(model);
+            db.Departments.FromSqlRaw($"dbo.Department_Update @DepartmentID={id}, @Name = {model.Name}");
 
             db.SaveChanges();
 
@@ -55,12 +56,20 @@ namespace MyWebapiDemo.Controllers
         [HttpDelete("{id}")]
         public ActionResult<Department> DeleteDepartmentById(int id)
         {
-            var department=db.Departments.Find(id);
-            db.Departments.Remove(department);
+            // var department=db.Departments.Find(id);
+            // db.Departments.Remove(department);
+            db.Departments.FromSqlRaw($"dbo.Department_Delete @DepartmentID = {id}");
 
             db.SaveChanges();
 
             return Ok();
+        }
+
+        [HttpGet("departmentCourseCount/{id}")]
+        public ActionResult<VwDepartmentCourseCount> getDepartmentCourseCountById(int id)
+        {
+            var courseStudentCount=db.VwDepartmentCourseCounts.FromSqlRaw($"select * from vwDepartmentCourseCount where DepartmentID =={id}").FirstOrDefault();
+            return courseStudentCount;
         }
     }
 }

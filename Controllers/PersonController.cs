@@ -22,16 +22,16 @@ namespace MyWebapiDemo.Controllers
         [HttpGet("")]
         public ActionResult<IEnumerable<Person>> GetPersons()
         {
-            return db.People.AsNoTracking().ToList();
+            return db.People.AsNoTracking().Where(data => data.IsDeleted==0).ToList();
         }
 
         [HttpGet("{id}")]
         public ActionResult<Person> GetPersonById(int id)
         {
-            return db.People.AsNoTracking().Where(data => data.Id==id).FirstOrDefault();
+            return db.People.AsNoTracking().Where(data => data.Id==id && data.IsDeleted==0).FirstOrDefault();
         }
 
-        [HttpPost("")]
+        [HttpPost("{id}")]
         public ActionResult<Person> PostPerson(Person model)
         {
             db.People.Add(model);

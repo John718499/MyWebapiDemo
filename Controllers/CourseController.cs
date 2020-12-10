@@ -22,13 +22,29 @@ namespace MyWebapiDemo.Controllers
         [HttpGet("")]
         public ActionResult<IEnumerable<Course>> GetCourses()
         {
+            // return db.Courses.AsNoTracking().Where(data => data.IsDeleted==0).ToList();
             return db.Courses.AsNoTracking().ToList();
+        }
+
+        [HttpGet("courseStudent/{id}")]
+        public ActionResult<IEnumerable<VwCourseStudent>> getCourseStudentsById(int id)
+        {
+            var courseStudents=db.VwCourseStudents.AsNoTracking().Where(data =>data.CourseId==id).ToList();
+            return courseStudents;
+        }
+
+        [HttpGet("courseStudentCount/{id}")]
+        public ActionResult<VwCourseStudentCount> getCourseStudentCountById(int id)
+        {
+            var courseStudentCount=db.VwCourseStudentCounts.AsNoTracking().Where(data =>data.CourseId==id).FirstOrDefault();
+            return courseStudentCount;
         }
 
         [HttpGet("{id}")]
         public ActionResult<Course> GetCourseById(int id)
         {
-            return db.Courses.AsNoTracking().Where(data => data.CourseId==id).FirstOrDefault();;
+            // return db.Courses.AsNoTracking().Where(data => data.CourseId==id && data.IsDeleted==0).FirstOrDefault();
+            return db.Courses.AsNoTracking().Where(data => data.CourseId==id).FirstOrDefault();
         }
 
         [HttpPost("")]

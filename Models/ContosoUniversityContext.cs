@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -231,5 +232,35 @@ namespace MyWebapiDemo.Models
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+        public override int SaveChanges()
+        {
+            var entities=this.ChangeTracker.Entries();
+
+            foreach(var entry in entities){
+                string entityName=entry.Entity.GetType().FullName.Split(".").Last();
+                string[] useIsDeletedDateModifiedTable={"Department","Person","Course"};
+                var findResult=Array.IndexOf(useIsDeletedDateModifiedTable,entityName);
+
+                Console.WriteLine("Entity Name: {0}",entityName);
+                Console.WriteLine("Status: {0}",entry.State);
+                Console.WriteLine("Index: {0}",findResult);
+
+                
+                if(findResult!=-1){
+                    switch(entry.State){
+                        case EntityState.Deleted:
+                            byte IsDeleted=1;
+                            entry.CurrentValues.SetValues(new{IsDeleted=IsDeleted});
+                            break;
+                        case EntityState.Modified:
+                        entry.CurrentValues.SetValues(new{DateModified=DateTime.Now});
+                            break;
+                    }
+                }
+            }
+
+            return base.SaveChanges();
+        }
     }
 }
